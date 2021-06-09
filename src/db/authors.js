@@ -1,22 +1,22 @@
 export default (sequelize, DataTypes) => {
-  const Module = sequelize.define("module", {
+  const Author = sequelize.define("author", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    topic: {
+    name: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    starts_at: {
-      type: DataTypes.DATE,
+    surname: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
-    ends_at: {
-      type: DataTypes.DATE,
+    avatar: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
-  });
-  return Module;
-};
+  })
+  return Author
+}

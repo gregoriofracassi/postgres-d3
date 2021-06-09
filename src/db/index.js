@@ -1,49 +1,35 @@
-import s from "sequelize";
-import pg from "pg";
-const Sequelize = s.Sequelize;
-const DataTypes = s.DataTypes;
-import StudentModel from "./students.js";
-import ClassModel from "./classes.js";
-import ModuleModel from "./modules.js";
-import TutorModel from "./tutors.js";
-import StudentClass from "./StudentClass.js";
-const { PGUSER, PGDATABASE, PGPASSWORD, PGHOST } = process.env;
+import s from "sequelize"
+import pg from "pg"
+const Sequelize = s.Sequelize
+const DataTypes = s.DataTypes
+import BlogModel from "./blogs.js"
+import AuthorModel from "./authors.js"
+const { PGUSER, PGDATABASE, PGPASSWORD, PGHOST } = process.env
 
 const sequelize = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {
   host: PGHOST,
   dialect: "postgres",
-});
-const pool = new pg.Pool();
+})
+const pool = new pg.Pool()
 const test = async () => {
   try {
-    await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
+    await sequelize.authenticate()
+    console.log("Connection has been established successfully.")
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Unable to connect to the database:", error)
   }
-};
+}
 
 const models = {
-  Student: StudentModel(sequelize, DataTypes),
-  Class: ClassModel(sequelize, DataTypes),
-  Module: ModuleModel(sequelize, DataTypes),
-  Tutor: TutorModel(sequelize, DataTypes),
-  StudentClass: StudentClass(sequelize, DataTypes),
+  Blog: BlogModel(sequelize, DataTypes),
+  Author: AuthorModel(sequelize, DataTypes),
   sequelize: sequelize,
   pool: pool,
-};
+}
 
-models.Module.hasMany(models.Class);
-models.Class.belongsTo(models.Module);
+models.Author.hasMany(models.Blog)
+models.Blog.belongsTo(models.Author)
 
-models.Class.belongsToMany(models.Student, {
-  through: { model: models.StudentClass, unique: false, timestamps: false },
-});
-models.Student.belongsToMany(models.Class, {
-  through: { model: models.StudentClass, unique: false, timestamps: false },
-});
-models.Tutor.hasMany(models.Class);
-models.Class.belongsTo(models.Tutor);
-test();
+test()
 
-export default models;
+export default models
