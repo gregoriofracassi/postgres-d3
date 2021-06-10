@@ -27,8 +27,14 @@ const models = {
   pool: pool,
 }
 
-models.Author.hasMany(models.Blog)
-models.Blog.belongsTo(models.Author)
+models.Author.hasMany(models.Blog, {
+  foreignKey: { allowNull: false },
+  onDelete: "CASCADE",
+})
+models.Blog.belongsTo(models.Author, {
+  foreignKey: { allowNull: false },
+  onDelete: "CASCADE",
+})
 
 test()
 
