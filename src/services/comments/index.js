@@ -1,22 +1,14 @@
 import express from "express"
 import models from "../../db/index.js"
-const Author = models.Author
-const Blog = models.Blog
-const Category = models.Category
 const Comment = models.Comment
+const Blog = models.Blog
 const router = express.Router()
 
 router
   .route("/")
   .get(async (req, res, next) => {
     try {
-      const data = await Blog.findAll({
-        include: [
-          { model: Category },
-          { model: Comment, include: { model: Author } },
-          { model: Author },
-        ],
-      })
+      const data = await Comment.findAll()
       res.send(data)
     } catch (e) {
       console.log(e)
@@ -24,7 +16,7 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      const data = await Blog.create(req.body)
+      const data = await Comment.create(req.body)
       res.send(data)
     } catch (e) {
       console.log(e)
@@ -35,13 +27,7 @@ router
   .route("/:id")
   .get(async (req, res, next) => {
     try {
-      const data = await Blog.findByPk(req.params.id, {
-        include: [
-          { model: Category },
-          { model: Comment, include: { model: Author } },
-          { model: Author },
-        ],
-      })
+      const data = await Comment.findByPk(req.params.id)
       res.send(data)
     } catch (e) {
       console.log(e)
@@ -49,7 +35,7 @@ router
   })
   .delete(async (req, res, next) => {
     try {
-      const row = await Blog.destroy({ where: { id: req.params.id } })
+      const row = await Comment.destroy({ where: { id: req.params.id } })
       if (row > 0) {
         res.send("ok")
       } else {
@@ -61,7 +47,7 @@ router
   })
   .put(async (req, res, next) => {
     try {
-      const data = await Blog.update(req.body, {
+      const data = await Comment.update(req.body, {
         where: { id: req.params.id },
         returning: true,
       })

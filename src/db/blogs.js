@@ -5,10 +5,6 @@ export default (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    category: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
     title: {
       type: DataTypes.TEXT,
       allowNull: false,
